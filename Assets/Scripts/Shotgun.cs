@@ -12,9 +12,13 @@ public class Shotgun : MonoBehaviour
     public int loadedAmmo;
 
     public float reloadTime = 1f;
+    public float justShotTime = .1f;
+    public float recoilMoveCooldown = .4f;
 
     public bool canReload = true;
     private bool canShoot = true;
+    public bool canMove = true;
+    public bool justShot = false;
     public bool GunFull => loadedAmmo == 2;
     public bool GunEmpty => loadedAmmo == 0;
 
@@ -57,6 +61,24 @@ public class Shotgun : MonoBehaviour
         canReload = true;
     }
 
+    private IEnumerator CanMoveCooldown()
+    {
+        yield return new WaitForSeconds(recoilMoveCooldown);
+        canMove = true;
+    }
+
+    private IEnumerator ShootCoroutine()
+    {
+        yield return new WaitForSeconds(justShotTime);
+        justShot = false;
+    }
+
+    public void ForceCanMove()
+    {
+        StopCoroutine(CanMoveCooldown());
+        canMove = true;
+    }
+
     public void Shoot()
     {
         if(!canShoot || GunEmpty || !canReload) //return if we can't shoot (already shooting/no loaded ammo/reloading
@@ -65,6 +87,8 @@ public class Shotgun : MonoBehaviour
         }
 
         canShoot = false;
+        canMove = false;
+        justShot = true;
 
         loadedAmmo--;
 
@@ -85,7 +109,9 @@ public class Shotgun : MonoBehaviour
         rigidbody.angularVelocity = Vector3.zero;
         rigidbody.AddForce(-forceMagnitude * Camera.main.transform.forward, ForceMode.Impulse); //add rocket jumping force
 
+        StartCoroutine(ShootCoroutine());
         canShoot = true;
+        StartCoroutine(CanMoveCooldown());
     }
 
     private void Update()

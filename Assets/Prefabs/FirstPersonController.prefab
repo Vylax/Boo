@@ -248,6 +248,7 @@ MonoBehaviour:
   zoomStepTime: 5
   playerCanMove: 1
   walkSpeed: 5
+  minRecoilMagnitude: 0.35
   maxVelocityChange: 10
   enableSprint: 0
   unlimitedSprint: 0
@@ -289,7 +290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadedAmmo: 0
   reloadTime: 1
+  recoilMoveCooldown: 5
   canReload: 1
+  canMove: 1
   forceMagnitude: 10
   objectsMask:
     serializedVersion: 2

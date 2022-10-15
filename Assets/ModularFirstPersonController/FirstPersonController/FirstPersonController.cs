@@ -57,6 +57,7 @@ public class FirstPersonController : MonoBehaviour
 
     public bool playerCanMove = true;
     public float walkSpeed = 5f;
+    public float minRecoilMagnitude = .3f;
     public float maxVelocityChange = 10f;
 
     // Internal Variables
@@ -130,6 +131,11 @@ public class FirstPersonController : MonoBehaviour
     private float timer = 0;
 
     #endregion
+
+    private void OnGUI()
+    {
+        GUI.Box(new Rect(10, 10, 100, 50), $"{Mathf.Round(rb.velocity.magnitude*1000f) /1000f}");
+    }
 
     private void Awake()
     {
@@ -367,9 +373,9 @@ public class FirstPersonController : MonoBehaviour
     void FixedUpdate()
     {
         #region Movement
-
-        if (playerCanMove)
+        if ((this.GetComponent<Shotgun>().canMove || isGrounded && rb.velocity.magnitude < minRecoilMagnitude) && !this.GetComponent<Shotgun>().justShot && playerCanMove)
         {
+            this.GetComponent<Shotgun>().ForceCanMove();
             // Calculate how fast we should be moving
             Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
@@ -624,6 +630,7 @@ public class FirstPersonController : MonoBehaviour
 
         GUI.enabled = fpc.playerCanMove;
         fpc.walkSpeed = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.walkSpeed, .1f, fpc.sprintSpeed);
+        fpc.minRecoilMagnitude = EditorGUILayout.Slider(new GUIContent("Min velocity to move", ""), fpc.minRecoilMagnitude, 0f, .5f);
         GUI.enabled = true;
 
         EditorGUILayout.Space();
