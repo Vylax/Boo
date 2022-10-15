@@ -5318,6 +5318,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghost
       objectReference: {fileID: 0}
+    - target: {fileID: 1054043909222497321, guid: 77bfc147332ea9643b620a323ad9df62, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77bfc147332ea9643b620a323ad9df62, type: 3}
 --- !u!1001 &6564553979738691714

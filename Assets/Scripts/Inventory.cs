@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
     private bool GunFull => this.GetComponent<Shotgun>().GunFull;
 
     public GameObject[] weapons = new GameObject[2];
+    public Transform GunExit;
 
     public LayerMask itemMask;
     public LayerMask worldMask;

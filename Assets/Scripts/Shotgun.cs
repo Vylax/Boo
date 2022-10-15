@@ -28,11 +28,15 @@ public class Shotgun : MonoBehaviour
     private Rigidbody rigidbody;
 
     private Inventory inventory;
+    Animation anim;
+
+    public GameObject shootParticles;
 
     private void Start()
     {
         rigidbody = this.GetComponent<Rigidbody>();
         inventory = this.GetComponent<Inventory>();
+        anim = inventory.weapons[0].GetComponent<Animation>();
     }
 
     public void Reload()
@@ -45,6 +49,9 @@ public class Shotgun : MonoBehaviour
         canReload = false;
 
         //play anim here
+        anim.Stop();
+        anim.Rewind();
+        anim.Play("Armature|Reloading");
 
         while (!GunFull && ammo > 0) //while the gun isn't full and we still have extra ammo, put ammo in the gun
         {
@@ -93,6 +100,11 @@ public class Shotgun : MonoBehaviour
         loadedAmmo--;
 
         //play anim here
+        anim.Rewind();
+        anim.Play("Armature|Shooting2");
+
+        GameObject temp = Instantiate(shootParticles, inventory.GunExit.position, inventory.GunExit.rotation * Quaternion.Euler(-89.98f, 0, 11.744f));
+        Destroy(temp, temp.GetComponent<ParticleSystem>().duration);
 
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, objectsMask, QueryTriggerInteraction.Ignore)) //get hit informations
@@ -102,7 +114,8 @@ public class Shotgun : MonoBehaviour
             Vector3 hitPoint = hit.point;
             Vector3 hitReactionDir = hit.point + (Camera.main.transform.position - hit.point).normalized;
 
-            //instantiate particles here
+            //instantiate hit particles here
+            
         }
 
         rigidbody.velocity = Vector3.zero;
