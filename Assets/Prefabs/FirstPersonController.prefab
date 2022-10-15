@@ -325,6 +325,14 @@ MonoBehaviour:
   weapons:
   - {fileID: 7088604739881778581}
   - {fileID: 5668138355913083157}
+  itemMask:
+    serializedVersion: 2
+    m_Bits: 256
+  worldMask:
+    serializedVersion: 2
+    m_Bits: 311
+  itemPickUpRange: 3
+  itemPickUpOffset: 0.3
 --- !u!1 &2258593518842204847
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +609,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 447
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

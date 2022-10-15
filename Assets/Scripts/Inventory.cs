@@ -15,6 +15,15 @@ public class Inventory : MonoBehaviour
 
     public GameObject[] weapons = new GameObject[2];
 
+    public LayerMask itemMask;
+    public LayerMask worldMask;
+
+    public float itemPickUpRange = 3f;
+    public float itemPickUpOffset = .3f;
+
+    //debug
+    private Vector3 pickupPoint;
+
     private void Start()
     {
         this.GetComponent<Shotgun>().enabled = false;
@@ -33,6 +42,38 @@ public class Inventory : MonoBehaviour
         {
             SwitchGun(currGunId - 1);
         }
+
+        if (Input.GetKeyDown(KeyCode.E)) //try to pickup item
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, itemPickUpRange, worldMask, QueryTriggerInteraction.Collide)) //get hit informations
+            {
+                //Debug
+                Debug.Log($"hit name: {hit.transform.name}");
+                pickupPoint = hit.point;
+                Vector3 hitReactionDir = hit.point + (Camera.main.transform.position - hit.point).normalized;
+
+                Collider[] items = Physics.OverlapSphere(hit.point, itemPickUpOffset, itemMask, QueryTriggerInteraction.Collide); //detect all items within a certain radius of hit point (to pick up item more easily)
+
+                if (items.Length > 0)
+                {
+                    float minDist = Mathf.Infinity;
+                    Collider item = null;
+
+                    for (int i = 0; i < items.Length; i++)
+                    {
+                        float itemDist = Vector3.Distance(items[i].transform.position, hit.point);
+                        if (itemDist < minDist)
+                        {
+                            minDist = itemDist;
+                            item = items[i];
+                        }
+                    }
+
+                    PickUp(item.GetComponent<Item>());
+                }
+            }
+        }
     }
 
     private void OnGUI()
@@ -43,16 +84,21 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void PickUp(int itemId)
+    public void PickUp(Item item)
     {
-        if(itemId == 0)
+        //Add particles
+
+
+        if(item.itemId == 0)
         {
             ammo++;
         }
-        else if(itemId == 1)
+        else if(item.itemId == 1)
         {
             batteries++;
         }
+
+        Destroy(item.gameObject);
     }
 
     public void SwitchGun(int gunId)
@@ -90,5 +136,11 @@ public class Inventory : MonoBehaviour
         {
             return "OX";
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(pickupPoint, .2f);
     }
 }
