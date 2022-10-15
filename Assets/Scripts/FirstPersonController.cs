@@ -132,11 +132,6 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
-    private void OnGUI()
-    {
-        GUI.Box(new Rect(10, 10, 100, 50), $"{Mathf.Round(rb.velocity.magnitude * 1000f) / 1000f}");
-    }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();

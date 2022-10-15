@@ -27,9 +27,10 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        this.GetComponent<Shotgun>().enabled = false;
-        this.GetComponent<MegaPhone>().enabled = false;
-
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].SetActive(false);
+        }
         SwitchGun(0);
     }
 
@@ -77,13 +78,13 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         if (currGunId == 0)
         {
             GUI.Box(new Rect(Screen.width - 10 - 100, Screen.height - 10 - 50, 100, 50), $"Ammo: {GetAmmoSymbol()} | {ammo}\n{(canReload ? "" : "Reloading...")}");
         }
-    }
+    }*/
 
     public void PickUp(Item item)
     {
@@ -92,7 +93,7 @@ public class Inventory : MonoBehaviour
 
         if(item.itemId == 0)
         {
-            ammo++;
+            ammo+=10;
         }
         else if(item.itemId == 1)
         {
@@ -106,20 +107,19 @@ public class Inventory : MonoBehaviour
     {
         weapons[currGunId].SetActive(false);
 
-        if (gunId > 1)
+        if (gunId > weapons.Length-1)
         {
             currGunId = 0;
         }
         else if(gunId < 0)
         {
-            currGunId = 1;
+            currGunId = weapons.Length - 1;
         }
         else
         {
             currGunId = gunId;
         }
-        this.GetComponent<Shotgun>().enabled = currGunId == 0 ? true : false;
-        this.GetComponent<MegaPhone>().enabled = currGunId == 1 ? true : false;
+
         weapons[currGunId].SetActive(true);
     }
 

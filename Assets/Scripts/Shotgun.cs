@@ -129,6 +129,11 @@ public class Shotgun : MonoBehaviour
 
     private void Update()
     {
+        if(inventory.currGunId != 0)
+        {
+            return;
+        }
+
         if (Input.GetButtonDown("Fire1"))
         {
             Shoot();
