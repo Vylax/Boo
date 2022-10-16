@@ -78,6 +78,13 @@ public class Ghost : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        //do stuff here
+
+        Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}");
+    }
+
     private void UpdateView()
     {
         float angle = Vector3.Angle(PlaneVector(transform.forward), PlaneVector(player.transform.position-transform.position));
@@ -226,6 +233,7 @@ public class Ghost : MonoBehaviour
         if (this.mode == EnemyMode.Hunt) //if we stop hunting
         {
             gameManager.huntingGhosts.Remove(this);
+            gameManager.AlterHuntingGhostCount();
 
             StopCoroutine(Hunting());
             StopCoroutine(WaitBeforeEndingTheHunt());
@@ -249,6 +257,7 @@ public class Ghost : MonoBehaviour
         if (mode == EnemyMode.Hunt) //if we start hunting
         {
             gameManager.huntingGhosts.Add(this);
+            gameManager.AlterHuntingGhostCount();
 
             agent.speed = huntingSpeed;
 

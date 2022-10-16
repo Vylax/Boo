@@ -101,6 +101,7 @@ public class FirstPersonController : MonoBehaviour
 
     // Internal Variables
     public bool isGrounded = false;
+    public bool wasGrounded = false;
 
     #endregion
 
@@ -129,6 +130,25 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private Vector3 jointOriginalPos;
     private float timer = 0;
+
+    public float walkSoundFrequency = 0.75f;
+    public float windSFXMinVelocity = 4f;
+    public float landingSFXMaxVelocity = -4f;
+
+    private void PlayWalkAudio()
+    {
+        Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+
+        // Checks if player is walking and isGrounded
+        // Will allow head bob
+        if (targetVelocity.x != 0 || targetVelocity.z != 0 && IsKindaGrounded())
+        {
+            int temp = Random.Range(1, 10);
+            string nbr = temp < 10 ? $"0{temp}" : $"{temp}";
+            //Player.Instance.PlayAudio($"pas {(Random.Range(0, 2) == 0 ? "herbe" : "terre")} {nbr}");
+            Player.Instance.PlayAudio($"pas terre {nbr}", 0, .3f);
+        }
+    }
 
     #endregion
 
@@ -197,6 +217,8 @@ public class FirstPersonController : MonoBehaviour
         }
 
         #endregion
+
+        InvokeRepeating("PlayWalkAudio", 0f, walkSoundFrequency);
     }
 
     float camRotation;
@@ -367,6 +389,10 @@ public class FirstPersonController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(!wasGrounded && isGrounded && rb.velocity.y < landingSFXMaxVelocity)
+        {
+            Player.Instance.PlayAudio($"atterissage 0{Random.Range(1, 5)}", 0, 0.5f);
+        }
         #region Movement
         if ((this.GetComponent<Shotgun>().canMove || isGrounded && rb.velocity.magnitude < minRecoilMagnitude) && !this.GetComponent<Shotgun>().justShot && playerCanMove)
         {
@@ -416,6 +442,7 @@ public class FirstPersonController : MonoBehaviour
                 if (isGrounded)
                 {
                     rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                    //play walk audio here on cycle ...
                 }
             }
             // All movement calculations while walking
@@ -445,6 +472,26 @@ public class FirstPersonController : MonoBehaviour
         }
 
         #endregion
+        wasGrounded = isGrounded;
+    }
+
+    bool IsKindaGrounded()
+    {
+        bool kindaGrounded;
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
+        Vector3 direction = transform.TransformDirection(Vector3.down);
+        float distance = .75f;
+
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
+        {
+            Debug.DrawRay(origin, direction * distance, Color.red);
+            kindaGrounded = true;
+        }
+        else
+        {
+            kindaGrounded = false;
+        }
+        return kindaGrounded;
     }
 
     // Sets isGrounded based on a raycast sent straigth down from the player object
@@ -652,6 +699,9 @@ public class FirstPersonControllerEditor : Editor
         GUI.enabled = fpc.playerCanMove;
         fpc.walkSpeed = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.walkSpeed, .1f, fpc.sprintSpeed);
         fpc.minRecoilMagnitude = EditorGUILayout.Slider(new GUIContent("Min velocity to move", ""), fpc.minRecoilMagnitude, 0f, 2f);
+        fpc.walkSoundFrequency = EditorGUILayout.Slider(new GUIContent("Footstep sounds frequency", ""), fpc.walkSoundFrequency, 0.25f, 1f);
+        fpc.landingSFXMaxVelocity = EditorGUILayout.Slider(new GUIContent("landingSFXMaxVelocity", ""), fpc.landingSFXMaxVelocity, -20f, 0f);
+        fpc.windSFXMinVelocity = EditorGUILayout.Slider(new GUIContent("windSFXMinVelocity", ""), fpc.windSFXMinVelocity, 0f, 20f);
         GUI.enabled = true;
 
         EditorGUILayout.Space();

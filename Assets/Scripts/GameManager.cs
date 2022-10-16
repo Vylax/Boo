@@ -1,7 +1,9 @@
+using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
+using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,16 +13,24 @@ public class GameManager : MonoBehaviour
 
     public int[] maxItemInstances;
 
+    public Vector2 minSpawnCoordinates;
+    public Vector2 maxSpawnCoordinates;
+
     public LayerMask groundMask;
     public LayerMask wallMask;
 
     public GameObject ghostPrefab;
+    public GameObject itemPrefab;
 
     public GameObject player;
     private Collider[] walls;
 
     public List<Ghost> roamingGhosts;
     public List<Ghost> huntingGhosts;
+
+    public float ghostSpawnCooldown = 60f; //time in between each ghost spawn
+    public float batterySpawnCooldown = 120f; //time in between each battery spawn
+    public float ammoSpawnCooldown = 30f; //time in between each ammo spawn
 
     private static GameManager _instance;
 
@@ -46,6 +56,8 @@ public class GameManager : MonoBehaviour
 
         roamingGhosts = new List<Ghost>();
         huntingGhosts = new List<Ghost>();
+
+        AlterHuntingGhostCount();
     }
 
     private void Update()
@@ -58,7 +70,16 @@ public class GameManager : MonoBehaviour
 
     public void SpawnItem(int itemID)
     {
+        Vector3 spawnPos = new Vector3(Random.Range(minSpawnCoordinates.x, maxSpawnCoordinates.x), skyYCoordinate, Random.Range(minSpawnCoordinates.y, maxSpawnCoordinates.y));
 
+        Item item = Instantiate(itemPrefab, spawnPos, Quaternion.identity).GetComponent<Item>();
+        item.Initialize(itemID);
+    }
+
+    public void AlterHuntingGhostCount()
+    {
+        int stage = Mathf.Min(huntingGhosts.Count, 4);
+        MusicPlayer.Instance.ChangeClip(stage);
     }
 
     private Vector3 GhostSpawnPos()

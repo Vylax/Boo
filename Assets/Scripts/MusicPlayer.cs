@@ -16,27 +16,45 @@ public class MusicPlayer : MonoBehaviour
 
     public bool canFade = true;
 
+    private static MusicPlayer _instance;
+
+    public static MusicPlayer Instance { get { return _instance; } }
+
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     private void Start()
     {
         currSource = 0;
-        currClip = 0;
-        sources[0].clip = clips[0];
-        sources[0].Play();
+        //currClip = 0;
+        //sources[0].clip = clips[0];
+        //sources[0].Play();
     }
 
     //Debug
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
             ChangeClip();
         }
-    }
+    }*/
 
-    public void ChangeClip()
+    public void ChangeClip(int stage)
     {
         canFade = false;
-        currClip = currClip + 1 < clips.Length ? currClip + 1 : 0;
+        //currClip = currClip + 1 < clips.Length ? currClip + 1 : 0;
+        currClip = stage;
         StartCoroutine(Fade(fadeDuration, currClip, sources[currSource], sources[(currSource + 1) % 2]));
         currSource = (currSource + 1) % 2;
     }

@@ -6,13 +6,7 @@ public class Item : MonoBehaviour
 {
     public int itemId;
 
-    private void Awake()
-    {
-        //remove when spawning items through game manager
-        Initialize(itemId);
-    }
-
-    private void Initialize(int itemId = 0)
+    public void Initialize(int itemId = 0)
     {
         this.itemId = itemId;
         this.GetComponent<Renderer>().material = Resources.Load<Material>($"Item{itemId}");

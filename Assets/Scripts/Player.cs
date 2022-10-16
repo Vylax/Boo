@@ -18,6 +18,27 @@ public class Player : MonoBehaviour
     public float period; //length in seconds of a cycle
     public float vignetteScaleFactor; //how much scaling applies at most during a cycle
 
+    public bool isAlive = true;
+
+    public GameObject audioPrefab;
+
+    private static Player _instance;
+
+    public static Player Instance { get { return _instance; } }
+
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     private void Start()
     {
         //get the vignette element
@@ -40,6 +61,23 @@ public class Player : MonoBehaviour
         AlterHealth(Time.fixedDeltaTime * -healthDrainSpeed);
     }
 
+    public void PlayAudio(string clip, float delay=0f, float volume=1f)
+    {
+        StartCoroutine(PlayAudioCoroutine(clip, Camera.main.transform.position, delay, volume));
+    }
+
+    public void PlayAudio(string clip, Vector3 pos, float delay = 0f, float volume = 1f)
+    {
+        StartCoroutine(PlayAudioCoroutine(clip, pos, delay, volume));
+    }
+
+    public IEnumerator PlayAudioCoroutine(string clip, Vector3 pos, float delay = 0f, float volume = 1f)
+    {
+        yield return new WaitForSeconds(delay);
+        AudioPlayer audioPlayer = Instantiate(audioPrefab, pos, Quaternion.identity).GetComponent<AudioPlayer>();
+        audioPlayer.Initialize(clip, volume);
+    }
+
     public void AlterHealth(float value)
     {
         float newHealth = health + value;
@@ -55,8 +93,9 @@ public class Player : MonoBehaviour
     {
         //do things here
         float endTime = Time.time;
-
         float survivedTime = endTime - startTime;
+
+        isAlive = false;
     }
 
     private void RefreshVignette(float value = -1f)

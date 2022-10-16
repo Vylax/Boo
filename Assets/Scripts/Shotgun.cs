@@ -52,6 +52,7 @@ public class Shotgun : MonoBehaviour
         anim.Stop();
         anim.Rewind();
         anim.Play("Armature|Reloading");
+        Player.Instance.PlayAudio($"crick crack 0{Random.Range(1, 4)}");
 
         while (!GunFull && ammo > 0) //while the gun isn't full and we still have extra ammo, put ammo in the gun
         {
@@ -102,6 +103,7 @@ public class Shotgun : MonoBehaviour
         //play anim here
         anim.Rewind();
         anim.Play("Armature|Shooting2");
+        Player.Instance.PlayAudio($"tir {Random.Range(1, 5)}", inventory.GunExit.position);
 
         GameObject temp = Instantiate(shootParticles, inventory.GunExit.position, inventory.GunExit.rotation * Quaternion.Euler(-89.98f, 0, 11.744f));
         Destroy(temp, temp.GetComponent<ParticleSystem>().duration);

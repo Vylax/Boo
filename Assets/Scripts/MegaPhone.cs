@@ -47,6 +47,7 @@ public class MegaPhone : MonoBehaviour
 
         battery--;
         //play audio
+        Player.Instance.PlayAudio($"boo megaphone v2");
         //add particles of shockwave
         //attack all enemies in the area
 
