@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -105,6 +106,13 @@ public class Player : MonoBehaviour
         //do things here
         float endTime = Time.time;
         float survivedTime = endTime - startTime;
+
+        Survivor.Instance.survivedTime = survivedTime;
+        Survivor.Instance.lastScene = SceneManager.GetActiveScene().name;
+
+        Cursor.lockState = CursorLockMode.Confined;
+
+        SceneManager.LoadScene("Menu");
 
         isAlive = false;
     }

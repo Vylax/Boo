@@ -384,7 +384,7 @@ MonoBehaviour:
   zoomFOV: 30
   zoomStepTime: 5
   playerCanMove: 1
-  walkSpeed: 5
+  walkSpeed: 4
   minRecoilMagnitude: 2
   maxVelocityChange: 10
   enableSprint: 0
@@ -510,6 +510,7 @@ MonoBehaviour:
   vignetteScaleFactor: 0.08
   isAlive: 1
   audioPrefab: {fileID: 4364004784783968213, guid: 2ad47dfb35ff3634d887fc0106caa321, type: 3}
+  ghostDamages: 30
 --- !u!1 &2258593518842204847
 GameObject:
   m_ObjectHideFlags: 0

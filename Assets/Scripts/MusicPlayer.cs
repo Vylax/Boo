@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MusicPlayer : MonoBehaviour
@@ -50,8 +51,29 @@ public class MusicPlayer : MonoBehaviour
         }
     }*/
 
+    private int queuedStage = -1;
+    private bool waiting = false;
+
+    private IEnumerator WaitForFade()
+    {
+        waiting = true;
+        yield return new WaitUntil(() => canFade);
+        ChangeClip(queuedStage);
+        waiting = false;
+    }
+
     public void ChangeClip(int stage)
     {
+        if (!canFade)
+        {
+            queuedStage = stage;
+            if (!waiting)
+            {
+                StartCoroutine(WaitForFade());
+            }
+            return;
+        }
+
         canFade = false;
         //currClip = currClip + 1 < clips.Length ? currClip + 1 : 0;
         currClip = stage;

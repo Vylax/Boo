@@ -25,12 +25,15 @@ public class Inventory : MonoBehaviour
     //debug
     private Vector3 pickupPoint;
 
+    public bool canSwitch;
+
     private void Start()
     {
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].SetActive(false);
         }
+        canSwitch = true;
         SwitchGun(0);
     }
 
@@ -111,6 +114,11 @@ public class Inventory : MonoBehaviour
 
     public void SwitchGun(int gunId)
     {
+        if (!canSwitch)
+        {
+            return;
+        }
+
         weapons[currGunId].SetActive(false);
 
         if (gunId > weapons.Length-1)

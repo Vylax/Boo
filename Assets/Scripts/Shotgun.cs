@@ -47,6 +47,7 @@ public class Shotgun : MonoBehaviour
         }
 
         canReload = false;
+        inventory.canSwitch = false;
 
         //play anim here
         anim.Stop();
@@ -67,6 +68,7 @@ public class Shotgun : MonoBehaviour
     {
         yield return new WaitForSeconds(reloadTime);
         canReload = true;
+        inventory.canSwitch = true;
     }
 
     private IEnumerator CanMoveCooldown()
@@ -97,6 +99,7 @@ public class Shotgun : MonoBehaviour
         canShoot = false;
         canMove = false;
         justShot = true;
+        inventory.canSwitch = false;
 
         loadedAmmo--;
 
@@ -126,6 +129,7 @@ public class Shotgun : MonoBehaviour
 
         StartCoroutine(ShootCoroutine());
         canShoot = true;
+        inventory.canSwitch = true;
         StartCoroutine(CanMoveCooldown());
     }
 

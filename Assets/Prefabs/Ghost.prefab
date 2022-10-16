@@ -88,7 +88,7 @@ MonoBehaviour:
     m_Bits: 2569
   lastPlayerPos: {x: 0, y: 0, z: 0}
   lastPlayerDir: {x: 0, y: 0, z: 0}
-  huntingCooldownRange: {x: 1, y: 5}
+  huntingCooldownRange: {x: 0.1, y: 5}
   waiting: 0
   waitingTime: 7
   huntingSpeed: 4

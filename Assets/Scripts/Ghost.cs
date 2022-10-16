@@ -33,13 +33,15 @@ public class Ghost : MonoBehaviour
     public bool playerInFOV = false;
     public bool playerWithinReach = false;
     public bool playerInSight = false; //if there is no obstacle between the player and a ghost (make sure u take trees leaves in ur calculations!!!!)
+    public bool playerCanBeHeard = false;
 
     public Vector3 sightOffest = new Vector3(0, 1.5f, 0);
 
-    public bool canSeePlayer => playerInFOV && playerWithinReach && playerInSight && player.GetComponent<FirstPersonController>().isGrounded;
+    public bool canSeePlayer => (playerInFOV || playerCanBeHeard) && playerWithinReach && playerInSight && player.GetComponent<FirstPersonController>().isGrounded;
 
     public float fov = 90f;
     public float sightDistance = 20f;
+    public float earDistance = 4f;
 
     public LayerMask lookForPlayerMask; //include player and walls and trees and leaves (+triggercolliders) but no ghost
 
@@ -134,6 +136,7 @@ public class Ghost : MonoBehaviour
 
         float dist = PlaneDist(player.transform.position, transform.position);
         playerWithinReach = dist <= sightDistance;
+        playerCanBeHeard = dist <= sightDistance;
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position+ sightOffest, (player.transform.position-(transform.position+ sightOffest)), out hit, sightDistance, lookForPlayerMask, QueryTriggerInteraction.Collide))

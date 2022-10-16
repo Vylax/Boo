@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("SpawnGhost", 0.5f, ghostSpawnCooldown);
         InvokeRepeating("SpawnAmmo", 0.5f, ammoSpawnCooldown);
         InvokeRepeating("SpawnBattery", 0.5f, batterySpawnCooldown);
+        //InvokeRepeating("AlterHuntingGhostCount", 0.2f, 1f);
 
         SpawnItem(2);
     }
@@ -138,8 +139,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"No point found on the other side. closest = {closest} | dir={dir}");
-            return Vector3.zero;
+            Debug.LogError($"No point found on the other side. closest = {closest} | dir={dir}. Returning default spawn vector");
+            return new Vector3(187.2f, 3.773f, 4.1f);
         }
     }
 

@@ -47,6 +47,7 @@ public class MegaPhone : MonoBehaviour
         }
 
         canShoot = false;
+        inventory.canSwitch = false;
 
         battery--;
 
@@ -73,5 +74,6 @@ public class MegaPhone : MonoBehaviour
         }
 
         canShoot = true;
+        inventory.canSwitch = true;
     }
 }
