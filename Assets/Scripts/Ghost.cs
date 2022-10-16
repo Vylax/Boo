@@ -43,12 +43,14 @@ public class Ghost : MonoBehaviour
     public LayerMask lookForPlayerMask; //include player and walls and trees and leaves (+triggercolliders) but no ghost
 
     public Vector3 lastPlayerPos; //last pos where the player was seen
+    public Vector3 lastPlayerDir; //last dir where the player was seen heading
 
     public Vector2 huntingCooldownRange = new Vector2(1f, 5f); //how much time between new roaming target assignment
 
     public bool waiting = false;
     public float waitingTime = 7f;
     public float huntingSpeed = 4f;
+    public float targetReachedThreshold = .5f;
 
     public enum EnemyMode
     {
@@ -89,6 +91,7 @@ public class Ghost : MonoBehaviour
             playerInSight = hit.transform.tag == "Player";
             if (canSeePlayer)
             {
+                lastPlayerDir = player.transform.position - lastPlayerPos; //we look at player movement and not facing direction
                 lastPlayerPos = player.transform.position;
             }
         }
@@ -124,7 +127,9 @@ public class Ghost : MonoBehaviour
         agent.SetDestination(target);
 
         float cooldown = Random.Range(huntingCooldownRange.x, huntingCooldownRange.y);
-        yield return new WaitForSeconds(cooldown);
+        float startCooldownTime = Time.time;
+
+        yield return new WaitUntil(() => PlaneDist(transform.position, target) < targetReachedThreshold || Time.time > startCooldownTime+cooldown);
 
         if (mode == EnemyMode.Hunt)
         {
@@ -136,7 +141,7 @@ public class Ghost : MonoBehaviour
     {
         while (waiting && mode == EnemyMode.Hunt)
         {
-            Vector3 newRoamingTarget = Random.Range(randomStepRange.x, randomStepRange.y) * weightedTargetDir() + roamPoint;
+            Vector3 newRoamingTarget = Random.Range(randomStepRange.x, randomStepRange.y) * weightedTargetDirWhileHunting() + roamPoint;
             roamPoint = newRoamingTarget;
 
             agent.SetDestination(roamPoint);
@@ -293,6 +298,19 @@ public class Ghost : MonoBehaviour
         Vector3 weightedTargetDir = hateDir * roamersHatredWeight + roamDir * roamingPointWeight + (stayInRoamingAreaDir.magnitude>roamingRadius ? (roamersHatredWeight+ roamingPointWeight) / roamingRadius * stayInRoamingAreaDir : Vector3.zero);
         return weightedTargetDir.normalized;
     }
+
+    public Vector3 weightedTargetDirWhileHunting()
+    {
+        Vector3 hateDir = GetAwayFromRoamersDir();
+        Vector3 roamDir = GetNextRoamingPointDir();
+
+        Vector3 playerDir = PlaneVector(lastPlayerDir).normalized; //ghost will tend to look toward player heading direction
+
+        Vector3 weightedTargetDir = hateDir * roamersHatredWeight + roamDir * roamingPointWeight + (roamersHatredWeight + roamingPointWeight) * playerDir;
+        return weightedTargetDir.normalized;
+    }
+
+
 
     void OnDrawGizmosSelected()
     {
