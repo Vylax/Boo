@@ -80,7 +80,7 @@ MonoBehaviour:
   playerInFOV: 0
   playerWithinReach: 0
   playerInSight: 0
-  fov: 90
+  fov: 135
   sightDistance: 30
   lookForPlayerMask:
     serializedVersion: 2

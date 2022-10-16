@@ -62,8 +62,9 @@ public class Ghost : MonoBehaviour
 
     private void UpdateView()
     {
-        float angle = Vector3.Angle(PlaneVector(transform.forward), PlaneVector(player.transform.position));
+        float angle = Vector3.Angle(PlaneVector(transform.forward), PlaneVector(player.transform.position-transform.position));
         playerInFOV = angle <= fov / 2f;
+        Debug.Log($"angle={angle}");
 
         float dist = PlaneDist(player.transform.position, transform.position);
         playerWithinReach = dist <= sightDistance;
