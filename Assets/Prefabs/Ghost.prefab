@@ -80,6 +80,7 @@ MonoBehaviour:
   playerInFOV: 0
   playerWithinReach: 0
   playerInSight: 0
+  sightOffest: {x: 0, y: 1.5, z: 0}
   fov: 135
   sightDistance: 30
   lookForPlayerMask:
@@ -92,6 +93,7 @@ MonoBehaviour:
   waitingTime: 7
   huntingSpeed: 4
   targetReachedThreshold: 0.5
+  ghostShrinkDuration: 0.35
 --- !u!1 &7068133894571216351
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,8 +187,8 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7068133894571216351}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 2

@@ -99,6 +99,11 @@ public class Inventory : MonoBehaviour
         {
             batteries++;
         }
+        else if (item.itemId == 2)
+        {
+            Player.Instance.AlterHealth(+100);
+            GameManager.Instance.SpawnItem(2);
+        }
 
         Destroy(item.gameObject);
     }

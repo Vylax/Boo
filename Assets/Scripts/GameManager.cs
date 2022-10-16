@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float roamingRadius = 20f;
 
     public int[] maxItemInstances;
+    private int[] itemInstances;
 
     public Vector2 minSpawnCoordinates;
     public Vector2 maxSpawnCoordinates;
@@ -58,18 +59,43 @@ public class GameManager : MonoBehaviour
         huntingGhosts = new List<Ghost>();
 
         AlterHuntingGhostCount();
+
+        itemInstances = new int[maxItemInstances.Length];
+
+        InvokeRepeating("SpawnGhost", 0f, ghostSpawnCooldown);
+        InvokeRepeating("SpawnAmmo", 0f, ammoSpawnCooldown);
+        InvokeRepeating("SpawnBattery", 0f, batterySpawnCooldown);
+
+        SpawnItem(2);
     }
 
-    private void Update()
+    /*private void Update()
     {
+        //debug
         if (Input.GetKeyDown(KeyCode.Y))
         {
             SpawnGhost();
         }
+    }*/
+
+
+    private void SpawnAmmo()
+    {
+        SpawnItem(0);
+    }
+    private void SpawnBattery()
+    {
+        SpawnItem(1);
     }
 
     public void SpawnItem(int itemID)
     {
+        if (itemInstances[itemID] >= maxItemInstances[itemID])
+        {
+            return;
+        }
+        itemInstances[itemID]++;
+
         Vector3 spawnPos = new Vector3(Random.Range(minSpawnCoordinates.x, maxSpawnCoordinates.x), skyYCoordinate, Random.Range(minSpawnCoordinates.y, maxSpawnCoordinates.y));
 
         Item item = Instantiate(itemPrefab, spawnPos, Quaternion.identity).GetComponent<Item>();
@@ -121,7 +147,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnGhost()
+    public void SpawnGhost()
     {
         Vector3 spawnPos = GhostSpawnPos();
 

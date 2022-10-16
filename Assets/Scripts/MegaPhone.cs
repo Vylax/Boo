@@ -11,6 +11,8 @@ public class MegaPhone : MonoBehaviour
     }
 
     public float shootCooldown = 10f;
+    public float shockWaveRadius = 10f;
+    public LayerMask enemyMask;
 
     private bool canShoot = true;
 
@@ -25,7 +27,7 @@ public class MegaPhone : MonoBehaviour
 
     private void Update()
     {
-        if (inventory.currGunId != 0)
+        if (inventory.currGunId != 1)
         {
             return;
         }
@@ -46,10 +48,28 @@ public class MegaPhone : MonoBehaviour
         canShoot = false;
 
         battery--;
-        //play audio
-        Player.Instance.PlayAudio($"boo megaphone v2");
+
+        StartCoroutine(Shooting());
+    }
+
+    private IEnumerator Shooting()
+    {
+        //start playing audio
+        Player.Instance.PlayAudio($"boo megaphone v2", 0, .7f);
+
+        yield return new WaitForSeconds(4f);
         //add particles of shockwave
+
         //attack all enemies in the area
+        Collider[] hitColliders = Physics.OverlapSphere(Player.Instance.transform.position, shockWaveRadius, enemyMask, QueryTriggerInteraction.Collide);
+        Debug.Log($"hhh{hitColliders.Length}");
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.GetComponentInParent<Ghost>() != null)
+            {
+                hitCollider.GetComponentInParent<Ghost>().Die();
+            }
+        }
 
         canShoot = true;
     }

@@ -69,6 +69,10 @@ public class Ghost : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(mode == EnemyMode.Freeze)
+        {
+            return;
+        }
         //update status here
         UpdateView();
 
@@ -81,15 +85,34 @@ public class Ghost : MonoBehaviour
     public void Die()
     {
         //do stuff here
+        mode = EnemyMode.Freeze;
+        StartCoroutine(Shrink());
+    }
 
+    public float ghostShrinkDuration = 0.35f;
+
+    private IEnumerator Shrink()
+    {
+        float timeStep = ghostShrinkDuration / 100f;
+        float volumeStep = transform.GetChild(0).localScale.x / 100f;//terrible way to do it but time's running out and so is my brain
+
+        for (int i = 0; i < 100; i++)
+        {
+            transform.GetChild(0).localScale -= Vector3.one * volumeStep;
+            yield return new WaitForSeconds(timeStep);
+        }
+
+        //add particles here !!!!!!!!!!!!!!!!
         Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}");
+        gameManager.AlterHuntingGhostCount();
+        GameManager.Instance.SpawnGhost();
+        Destroy(this.gameObject);
     }
 
     private void UpdateView()
     {
         float angle = Vector3.Angle(PlaneVector(transform.forward), PlaneVector(player.transform.position-transform.position));
         playerInFOV = angle <= fov / 2f;
-        Debug.Log($"angle={angle}");
 
         float dist = PlaneDist(player.transform.position, transform.position);
         playerWithinReach = dist <= sightDistance;
@@ -262,6 +285,10 @@ public class Ghost : MonoBehaviour
             agent.speed = huntingSpeed;
 
             Hunt();
+        }
+        if (mode == EnemyMode.Freeze) //if we start freezing
+        {
+            agent.enabled = false;
         }
     }
 
