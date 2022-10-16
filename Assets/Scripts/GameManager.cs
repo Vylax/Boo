@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public float skyYCoordinate;
     public float roamingRadius = 20f;
 
-    public int maxItemInstances;
+    public int[] maxItemInstances;
 
     public LayerMask groundMask;
     public LayerMask wallMask;
