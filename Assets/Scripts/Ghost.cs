@@ -108,14 +108,19 @@ public class Ghost : MonoBehaviour
         float timeStep = ghostShrinkDuration / 100f;
         float volumeStep = transform.GetChild(0).localScale.x / 100f;//terrible way to do it but time's running out and so is my brain
 
+        int popInt = Random.Range(69, 100);
+
         for (int i = 0; i < 100; i++)
         {
+            if (i == popInt)
+            {
+                //add particles here !!!!!!!!!!!!!!!!
+                Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}", transform.position);
+            }
             transform.GetChild(0).localScale -= Vector3.one * volumeStep;
             yield return new WaitForSeconds(timeStep);
         }
 
-        //add particles here !!!!!!!!!!!!!!!!
-        Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}", transform.position);
         GameManager.Instance.huntingGhosts.Remove(this);
         GameManager.Instance.AlterHuntingGhostCount();
         GameManager.Instance.SpawnGhost();

@@ -51,7 +51,7 @@ public class Inventory : MonoBehaviour
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, itemPickUpRange, worldMask, QueryTriggerInteraction.Collide)) //get hit informations
             {
                 //Debug
-                Debug.Log($"hit name: {hit.transform.name}");
+                //Debug.Log($"hit name: {hit.transform.name}");
                 pickupPoint = hit.point;
                 Vector3 hitReactionDir = hit.point + (Camera.main.transform.position - hit.point).normalized;
 
