@@ -405,6 +405,7 @@ MonoBehaviour:
   jumpKey: 32
   jumpPower: 5
   isGrounded: 0
+  wasGrounded: 0
   enableCrouch: 0
   holdToCrouch: 1
   crouchKey: 306
@@ -414,6 +415,9 @@ MonoBehaviour:
   joint: {fileID: 2258593519656673414}
   bobSpeed: 10
   bobAmount: {x: 0, y: 0.1, z: 0}
+  walkSoundFrequency: 0.75
+  windSFXMinVelocity: 10
+  landingSFXMaxVelocity: -4
 --- !u!114 &5418742093832084936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +455,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootCooldown: 10
+  shockWaveRadius: 10
+  shockWaveDelay: 5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &8586340796089086724
 MonoBehaviour:
   m_ObjectHideFlags: 0

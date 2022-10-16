@@ -13,13 +13,12 @@ public class Ghost : MonoBehaviour
 
     public EnemyMode mode;
 
-    private GameManager gameManager = GameManager.Instance;
-    private GameObject player => gameManager.player;
+    private GameObject player => GameManager.Instance.player;
 
     /// <summary>
     /// roaming variables
     /// </summary>
-    public float roamingRadius => gameManager.roamingRadius;
+    public float roamingRadius => GameManager.Instance.roamingRadius;
     public float roamingPointWeight = 2f; //weight of the roaming random vector
     public float roamersHatredWeight = 1f; //weight of the "get away from other roamers" vector
     public Vector2 randomStepRange = new Vector2(1f, 5f); //how much units should be attributed to weightedTargetDir
@@ -54,6 +53,8 @@ public class Ghost : MonoBehaviour
     public float huntingSpeed = 4f;
     public float targetReachedThreshold = .5f;
 
+    public Material freezeMaterial;
+
     public enum EnemyMode
     {
         Idle,//don't move but can attack if in range
@@ -86,7 +87,18 @@ public class Ghost : MonoBehaviour
     {
         //do stuff here
         mode = EnemyMode.Freeze;
+        GetComponentInChildren<MeshRenderer>().material = freezeMaterial;
         StartCoroutine(Shrink());
+    }
+
+    public void Attack()
+    {
+        GetComponentInChildren<MeshRenderer>().enabled = false;
+
+        //vanishing particles here
+        GameManager.Instance.huntingGhosts.Remove(this);
+        GameManager.Instance.AlterHuntingGhostCount();
+        Player.Instance.Attacked(this);
     }
 
     public float ghostShrinkDuration = 0.35f;
@@ -103,8 +115,9 @@ public class Ghost : MonoBehaviour
         }
 
         //add particles here !!!!!!!!!!!!!!!!
-        Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}");
-        gameManager.AlterHuntingGhostCount();
+        Player.Instance.PlayAudio($"pop 0{Random.Range(1, 9)}", transform.position);
+        GameManager.Instance.huntingGhosts.Remove(this);
+        GameManager.Instance.AlterHuntingGhostCount();
         GameManager.Instance.SpawnGhost();
         Destroy(this.gameObject);
     }
@@ -249,14 +262,14 @@ public class Ghost : MonoBehaviour
         
         if(this.mode == EnemyMode.Roam) //if we're no longer roaming
         {
-            gameManager.roamingGhosts.Remove(this);
+            GameManager.Instance.roamingGhosts.Remove(this);
 
             StopCoroutine(SetRoamingDist());
         }
         if (this.mode == EnemyMode.Hunt) //if we stop hunting
         {
-            gameManager.huntingGhosts.Remove(this);
-            gameManager.AlterHuntingGhostCount();
+            GameManager.Instance.huntingGhosts.Remove(this);
+            GameManager.Instance.AlterHuntingGhostCount();
 
             StopCoroutine(Hunting());
             StopCoroutine(WaitBeforeEndingTheHunt());
@@ -271,7 +284,7 @@ public class Ghost : MonoBehaviour
 
         if (mode == EnemyMode.Roam) //if we start roaming
         {
-            gameManager.roamingGhosts.Add(this);
+            GameManager.Instance.roamingGhosts.Add(this);
 
             agent.speed = roamingWalkSpeed;
 
@@ -279,8 +292,8 @@ public class Ghost : MonoBehaviour
         }
         if (mode == EnemyMode.Hunt) //if we start hunting
         {
-            gameManager.huntingGhosts.Add(this);
-            gameManager.AlterHuntingGhostCount();
+            GameManager.Instance.huntingGhosts.Add(this);
+            GameManager.Instance.AlterHuntingGhostCount();
 
             agent.speed = huntingSpeed;
 
@@ -294,7 +307,7 @@ public class Ghost : MonoBehaviour
 
     public Vector3 GetAwayFromRoamersDir()
     {
-        List<Ghost> roamingGhosts = new List<Ghost>(gameManager.roamingGhosts); //make a copy of the list to make sure it doesn't change while we iterate on the list
+        List<Ghost> roamingGhosts = new List<Ghost>(GameManager.Instance.roamingGhosts); //make a copy of the list to make sure it doesn't change while we iterate on the list
 
         float minDist = Mathf.Infinity;
 

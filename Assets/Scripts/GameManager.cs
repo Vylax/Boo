@@ -2,8 +2,6 @@ using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class GameManager : MonoBehaviour
     public float roamingRadius = 20f;
 
     public int[] maxItemInstances;
-    private int[] itemInstances;
+    public int[] itemInstances;
 
     public Vector2 minSpawnCoordinates;
     public Vector2 maxSpawnCoordinates;
@@ -52,7 +50,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         walls = GameObject.FindGameObjectWithTag("Walls").GetComponents<Collider>();
 
         roamingGhosts = new List<Ghost>();
@@ -62,9 +59,9 @@ public class GameManager : MonoBehaviour
 
         itemInstances = new int[maxItemInstances.Length];
 
-        InvokeRepeating("SpawnGhost", 0f, ghostSpawnCooldown);
-        InvokeRepeating("SpawnAmmo", 0f, ammoSpawnCooldown);
-        InvokeRepeating("SpawnBattery", 0f, batterySpawnCooldown);
+        InvokeRepeating("SpawnGhost", 0.5f, ghostSpawnCooldown);
+        InvokeRepeating("SpawnAmmo", 0.5f, ammoSpawnCooldown);
+        InvokeRepeating("SpawnBattery", 0.5f, batterySpawnCooldown);
 
         SpawnItem(2);
     }

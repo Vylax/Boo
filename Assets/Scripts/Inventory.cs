@@ -90,8 +90,8 @@ public class Inventory : MonoBehaviour
     {
         //Add particles
 
-
-        if(item.itemId == 0)
+        GameManager.Instance.itemInstances[item.itemId]--;
+        if (item.itemId == 0)
         {
             ammo+=5;
         }
@@ -104,6 +104,7 @@ public class Inventory : MonoBehaviour
             Player.Instance.AlterHealth(+100);
             GameManager.Instance.SpawnItem(2);
         }
+        
 
         Destroy(item.gameObject);
     }

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
 
     public GameObject audioPrefab;
 
+    public float ghostDamages = 30f;
+
     private static Player _instance;
 
     public static Player Instance { get { return _instance; } }
@@ -59,6 +61,15 @@ public class Player : MonoBehaviour
     {
         RefreshVignette();
         AlterHealth(Time.fixedDeltaTime * -healthDrainSpeed);
+    }
+
+    public void Attacked(Ghost ghost)
+    {
+        AlterHealth(-ghostDamages);
+        //do some stuff
+        GameManager.Instance.SpawnGhost();
+
+        Destroy(ghost.gameObject);
     }
 
     public void PlayAudio(string clip, float delay=0f, float volume=1f)

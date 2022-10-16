@@ -93,6 +93,7 @@ MonoBehaviour:
   waitingTime: 7
   huntingSpeed: 4
   targetReachedThreshold: 0.5
+  freezeMaterial: {fileID: 2100000, guid: 41ac4e04272471b449dda1b308209e10, type: 2}
   ghostShrinkDuration: 0.35
 --- !u!1 &7068133894571216351
 GameObject:
@@ -106,6 +107,7 @@ GameObject:
   - component: {fileID: 6841818227944691904}
   - component: {fileID: 8725709040232918026}
   - component: {fileID: 1688755851048189728}
+  - component: {fileID: 3456552411536929268}
   m_Layer: 7
   m_Name: ghost
   m_TagString: Enemy
@@ -193,3 +195,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.25}
+--- !u!114 &3456552411536929268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7068133894571216351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caeac671862002842a2180f0d188626e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
