@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,12 +35,20 @@ public class Ghost : MonoBehaviour
     public bool playerWithinReach = false;
     public bool playerInSight = false; //if there is no obstacle between the player and a ghost (make sure u take trees leaves in ur calculations!!!!)
 
-    public bool canSeePlayer => playerInFOV && playerWithinReach && playerInSight;
+    public bool canSeePlayer => playerInFOV && playerWithinReach && playerInSight && player.GetComponent<FirstPersonController>().isGrounded;
 
     public float fov = 90f;
     public float sightDistance = 20f;
 
     public LayerMask lookForPlayerMask; //include player and walls and trees and leaves (+triggercolliders) but no ghost
+
+    public Vector3 lastPlayerPos; //last pos where the player was seen
+
+    public Vector2 huntingCooldownRange = new Vector2(1f, 5f); //how much time between new roaming target assignment
+
+    public bool waiting = false;
+    public float waitingTime = 7f;
+    public float huntingSpeed = 4f;
 
     public enum EnemyMode
     {
@@ -59,7 +68,7 @@ public class Ghost : MonoBehaviour
         //update status here
         UpdateView();
 
-        if (playerInSight)
+        if (canSeePlayer && mode != EnemyMode.Hunt)
         {
             SetMode(EnemyMode.Hunt);
         }
@@ -78,11 +87,90 @@ public class Ghost : MonoBehaviour
         if (Physics.Raycast(transform.position, (player.transform.position-transform.position), out hit, sightDistance, lookForPlayerMask, QueryTriggerInteraction.Collide))
         {
             playerInSight = hit.transform.tag == "Player";
+            if (canSeePlayer)
+            {
+                lastPlayerPos = player.transform.position;
+            }
         }
         else
         {
             playerInSight = false;
         }
+    }
+
+    private void Hunt()
+    {
+        if (mode != EnemyMode.Hunt)
+        {
+            return;
+        }
+
+        target = lastPlayerPos;
+
+        if (canSeePlayer)
+        {
+            StartCoroutine(Hunting());
+        }
+
+        if (!canSeePlayer && !waiting) //we don't see the player and aren't waiting yet
+        {
+            waiting = true;
+            StartCoroutine(WaitBeforeEndingTheHunt());
+        }
+    }
+
+    private IEnumerator Hunting()
+    {
+        agent.SetDestination(target);
+
+        float cooldown = Random.Range(huntingCooldownRange.x, huntingCooldownRange.y);
+        yield return new WaitForSeconds(cooldown);
+
+        if (mode == EnemyMode.Hunt)
+        {
+            Hunt();
+        }
+    }
+
+    private IEnumerator RoamWhileWaiting()
+    {
+        while (waiting && mode == EnemyMode.Hunt)
+        {
+            Vector3 newRoamingTarget = Random.Range(randomStepRange.x, randomStepRange.y) * weightedTargetDir() + roamPoint;
+            roamPoint = newRoamingTarget;
+
+            agent.SetDestination(roamPoint);
+
+            float cooldown = randomCooldownRange.x; //ghosts roam quickly cuz they're on alert
+            yield return new WaitForSeconds(cooldown);
+        }
+        yield return null;
+    }
+
+    private IEnumerator WaitBeforeEndingTheHunt()
+    {
+        float startWaitingTime = Time.time;
+
+        target = lastPlayerPos;
+
+        //try to roam meanwhile ?
+        roamPoint = lastPlayerPos;
+        StartCoroutine(RoamWhileWaiting());
+
+        yield return new WaitUntil(() => canSeePlayer || Time.time >= startWaitingTime + waitingTime);
+
+        StopCoroutine(RoamWhileWaiting());
+
+        if (canSeePlayer) //resume hunt
+        {
+            Hunt();
+        }
+        else //stop hunting and go back to roam
+        {
+            SetMode(EnemyMode.Roam);
+        }
+
+        waiting = false;
     }
 
     private void Roam()
@@ -127,6 +215,16 @@ public class Ghost : MonoBehaviour
 
             StopCoroutine(SetRoamingDist());
         }
+        if (this.mode == EnemyMode.Hunt) //if we stop hunting
+        {
+            gameManager.huntingGhosts.Remove(this);
+
+            StopCoroutine(Hunting());
+            StopCoroutine(WaitBeforeEndingTheHunt());
+            StopCoroutine(RoamWhileWaiting());
+            waiting = false;
+        }
+
 
         //update mode
         this.mode = mode;
@@ -139,6 +237,14 @@ public class Ghost : MonoBehaviour
             agent.speed = roamingWalkSpeed;
 
             Roam();
+        }
+        if (mode == EnemyMode.Hunt) //if we start hunting
+        {
+            gameManager.huntingGhosts.Add(this);
+
+            agent.speed = huntingSpeed;
+
+            Hunt();
         }
     }
 
@@ -197,6 +303,8 @@ public class Ghost : MonoBehaviour
         Gizmos.DrawWireSphere(target, roamingRadius);
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(agent.destination, 1);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(lastPlayerPos, 1);
     }
 
     public static Vector3 PlaneVector(Vector3 u)

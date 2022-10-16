@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private Collider[] walls;
 
     public List<Ghost> roamingGhosts;
+    public List<Ghost> huntingGhosts;
 
     private static GameManager _instance;
 
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
         walls = GameObject.FindGameObjectWithTag("Walls").GetComponents<Collider>();
 
         roamingGhosts = new List<Ghost>();
+        huntingGhosts = new List<Ghost>();
     }
 
     private void Update()

@@ -93,7 +93,7 @@ public class Inventory : MonoBehaviour
 
         if(item.itemId == 0)
         {
-            ammo+=10;
+            ammo+=5;
         }
         else if(item.itemId == 1)
         {
