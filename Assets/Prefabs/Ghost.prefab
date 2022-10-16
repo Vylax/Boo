@@ -70,6 +70,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 3963416153427700867}
   target: {x: 0, y: 0, z: 0}
+  roamPoint: {x: 0, y: 0, z: 0}
+  mode: 0
+  roamingPointWeight: 2
+  roamersHatredWeight: 2
+  randomStepRange: {x: 1, y: 5}
+  randomCooldownRange: {x: 1, y: 5}
+  roamingWalkSpeed: 2
+  playerInFOV: 0
+  playerWithinReach: 0
+  playerInSight: 0
+  fov: 90
+  sightDistance: 30
+  lookForPlayerMask:
+    serializedVersion: 2
+    m_Bits: 521
 --- !u!1 &7068133894571216351
 GameObject:
   m_ObjectHideFlags: 0

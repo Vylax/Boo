@@ -235,7 +235,7 @@ MonoBehaviour:
   fov: 60
   invertCamera: 0
   cameraCanMove: 1
-  mouseSensitivity: 0.99
+  mouseSensitivity: 0.5
   maxLookAngle: 89.999
   lockCursor: 1
   crosshair: 1
@@ -325,8 +325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da40eab3e76ac6b408dda268766b298f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 10
-  batteries: 2
+  ammo: 0
+  batteries: 0
   currGunId: 0
   weapons:
   - {fileID: 7088604739881778581}
@@ -1279,7 +1279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 2a52662d8d4f25c478e705ee1ab27069, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 6163f04bd83da5a49a770074c66d6a1b, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -1293,6 +1293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2051763658611861446}
+  - component: {fileID: 1868620534}
   m_Layer: 3
   m_Name: Weapons
   m_TagString: Untagged
@@ -1318,6 +1319,20 @@ Transform:
   m_Father: {fileID: 2258593519467288067}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1868620534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061942742624743655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d38c6bb539b03a44ab5dbadab476c30c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smooth: 6
+  swayMultiplier: 1
 --- !u!1001 &4803113874530968329
 PrefabInstance:
   m_ObjectHideFlags: 0
