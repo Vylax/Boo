@@ -58,6 +58,11 @@ public class Ghost : MonoBehaviour
     {
         //update status here
         UpdateView();
+
+        if (playerInSight)
+        {
+            SetMode(EnemyMode.Hunt);
+        }
     }
 
     private void UpdateView()

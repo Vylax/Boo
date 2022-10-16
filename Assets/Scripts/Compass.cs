@@ -10,6 +10,7 @@ public class Compass : MonoBehaviour
     public float angle;
     public GameObject arrow;
     public GameObject target;
+    public int targetType;
 
     private void Start()
     {
@@ -24,7 +25,7 @@ public class Compass : MonoBehaviour
         for (int i = 0; i < temp.Length; i++)
         {
             float dist = Vector3.Distance(temp[i].transform.position, transform.position);
-            if (temp[i].GetComponent<Item>().itemId == 2 && dist < minDist)
+            if (temp[i].GetComponent<Item>().itemId == targetType && dist < minDist)
             {
                 minDist = dist;
                 tempTarget = temp[i];
