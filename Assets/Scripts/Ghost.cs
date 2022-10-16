@@ -35,6 +35,8 @@ public class Ghost : MonoBehaviour
     public bool playerWithinReach = false;
     public bool playerInSight = false; //if there is no obstacle between the player and a ghost (make sure u take trees leaves in ur calculations!!!!)
 
+    public Vector3 sightOffest = new Vector3(0, 1.5f, 0);
+
     public bool canSeePlayer => playerInFOV && playerWithinReach && playerInSight && player.GetComponent<FirstPersonController>().isGrounded;
 
     public float fov = 90f;
@@ -86,8 +88,9 @@ public class Ghost : MonoBehaviour
         playerWithinReach = dist <= sightDistance;
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, (player.transform.position-transform.position), out hit, sightDistance, lookForPlayerMask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(transform.position+ sightOffest, (player.transform.position-(transform.position+ sightOffest)), out hit, sightDistance, lookForPlayerMask, QueryTriggerInteraction.Collide))
         {
+            Debug.DrawLine(transform.position + sightOffest, hit.point, Color.red);
             playerInSight = hit.transform.tag == "Player";
             if (canSeePlayer)
             {
@@ -126,10 +129,10 @@ public class Ghost : MonoBehaviour
     {
         agent.SetDestination(target);
 
-        float cooldown = Random.Range(huntingCooldownRange.x, huntingCooldownRange.y);
+        float cooldown = huntingCooldownRange.x;
         float startCooldownTime = Time.time;
 
-        yield return new WaitUntil(() => PlaneDist(transform.position, target) < targetReachedThreshold || Time.time > startCooldownTime+cooldown);
+        yield return new WaitUntil(() => PlaneDist(transform.position, agent.destination) < targetReachedThreshold || Time.time > startCooldownTime+cooldown);
 
         if (mode == EnemyMode.Hunt)
         {

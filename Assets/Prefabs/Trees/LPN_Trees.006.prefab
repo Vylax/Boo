@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33000012469822722}
   - component: {fileID: 23000010125065682}
   - component: {fileID: 4712493935244969820}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LPN_Trees.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}

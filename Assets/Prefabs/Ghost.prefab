@@ -84,7 +84,14 @@ MonoBehaviour:
   sightDistance: 30
   lookForPlayerMask:
     serializedVersion: 2
-    m_Bits: 521
+    m_Bits: 2569
+  lastPlayerPos: {x: 0, y: 0, z: 0}
+  lastPlayerDir: {x: 0, y: 0, z: 0}
+  huntingCooldownRange: {x: 1, y: 5}
+  waiting: 0
+  waitingTime: 7
+  huntingSpeed: 4
+  targetReachedThreshold: 0.5
 --- !u!1 &7068133894571216351
 GameObject:
   m_ObjectHideFlags: 0

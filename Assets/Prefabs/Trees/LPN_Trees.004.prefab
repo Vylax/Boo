@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 33000010173356488}
   - component: {fileID: 23000011361681736}
   - component: {fileID: 869457510982616989}
-  m_Layer: 0
+  - component: {fileID: 9163060914999721814}
+  m_Layer: 11
   m_Name: LPN_Trees.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,3 +99,17 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!64 &9163060914999721814
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012795120326}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300120, guid: 12d2ed6417ce14085ac856a645edee45, type: 3}

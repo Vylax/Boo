@@ -404,6 +404,7 @@ MonoBehaviour:
   enableJump: 1
   jumpKey: 32
   jumpPower: 5
+  isGrounded: 0
   enableCrouch: 0
   holdToCrouch: 1
   crouchKey: 306
@@ -494,6 +495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   maxHealth: 100
+  healthDrainSpeed: 1
   mVolume: {fileID: 3670849295946791131}
   period: 1
   vignetteScaleFactor: 0.08
