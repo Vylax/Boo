@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108562771}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -93,7 +93,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1108562771}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
@@ -460,6 +460,10 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
+  ShockWavePrefab: {fileID: 798148046123388983, guid: 8136568708d25844297fb84b14e4936d, type: 3}
+  shockWaveCount: 10
+  shockWaveBurstTime: 0.3
+  shockWaveLifeTime: 7
 --- !u!114 &8586340796089086724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +494,7 @@ MonoBehaviour:
     m_Bits: 311
   itemPickUpRange: 3
   itemPickUpOffset: 0.3
+  canSwitch: 0
 --- !u!114 &302608755525730350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -789,7 +794,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 447
+    m_Bits: 4543
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

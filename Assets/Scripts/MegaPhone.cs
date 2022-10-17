@@ -21,6 +21,11 @@ public class MegaPhone : MonoBehaviour
 
     private Inventory inventory;
 
+    public GameObject ShockWavePrefab;
+    public int shockWaveCount = 10;
+    public float shockWaveBurstTime = 0.3f;
+    public float shockWaveLifeTime = 7f;
+
     private void Start()
     {
         inventory = this.GetComponent<Inventory>();
@@ -61,9 +66,11 @@ public class MegaPhone : MonoBehaviour
 
         yield return new WaitForSeconds(shockWaveDelay);
         //add particles of shockwave
+        StartCoroutine(SpawnShockWave());
 
         //attack all enemies in the area
-        Collider[] hitColliders = Physics.OverlapSphere(Player.Instance.transform.position, shockWaveRadius, enemyMask, QueryTriggerInteraction.Collide);
+        //done by the shockwave
+        /*Collider[] hitColliders = Physics.OverlapSphere(Player.Instance.transform.position, shockWaveRadius, enemyMask, QueryTriggerInteraction.Collide);
         Debug.Log($"hhh{hitColliders.Length}");
         foreach (var hitCollider in hitColliders)
         {
@@ -71,9 +78,20 @@ public class MegaPhone : MonoBehaviour
             {
                 hitCollider.GetComponentInParent<Ghost>().Die();
             }
-        }
+        }*/
 
         canShoot = true;
         inventory.canSwitch = true;
+    }
+
+    private IEnumerator SpawnShockWave()
+    {
+        for (int i = 0; i < shockWaveCount; i++)
+        {
+            GameObject temp = Instantiate(ShockWavePrefab, Camera.main.transform.position, Quaternion.identity);
+            temp.transform.forward = Camera.main.transform.forward;
+            Destroy(temp, shockWaveLifeTime);
+            yield return new WaitForSeconds(shockWaveBurstTime);
+        }
     }
 }

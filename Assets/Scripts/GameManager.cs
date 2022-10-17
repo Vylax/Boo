@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
 
         Ghost ghost = Instantiate(ghostPrefab, spawnPos, Quaternion.identity).GetComponent<Ghost>();
 
+        ghost.spawnTime = Time.time;
         ghost.roamPoint = spawnPos;
         ghost.target = spawnPos;
         ghost.SetMode(Ghost.EnemyMode.Roam);

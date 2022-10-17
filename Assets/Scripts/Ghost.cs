@@ -57,6 +57,8 @@ public class Ghost : MonoBehaviour
 
     public Material freezeMaterial;
 
+    public float spawnTime = Mathf.Infinity;
+
     public enum EnemyMode
     {
         Idle,//don't move but can attack if in range

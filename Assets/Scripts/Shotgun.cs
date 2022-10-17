@@ -115,7 +115,7 @@ public class Shotgun : MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, objectsMask, QueryTriggerInteraction.Ignore)) //get hit informations
         {
             //Debug
-            Debug.Log($"hit name: {hit.transform.name}");
+            //Debug.Log($"hit name: {hit.transform.name}");
             Vector3 hitPoint = hit.point;
             Vector3 hitReactionDir = hit.point + (Camera.main.transform.position - hit.point).normalized;
 

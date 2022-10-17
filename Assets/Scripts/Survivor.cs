@@ -41,38 +41,6 @@ public class Survivor : MonoBehaviour
             GUI.Box(new Rect(10, 10, Screen.width - 20, 50), "You are dead", style);
 
             GUI.Box(new Rect(10, 60, Screen.width - 20, 50), $"You survived for {Mathf.FloorToInt(survivedTime)} seconds", style);
-
-            float buttonHeight = (Screen.height - 130 - 20) / 2f;
-
-            if(GUI.Button(new Rect(10, 130, Screen.width - 20, buttonHeight), "Play Again", style))
-            {
-                //StartPlaying();
-            }
-
-            if (GUI.Button(new Rect(10, 130+10+buttonHeight, Screen.width - 20, buttonHeight), "Quit", style))
-            {
-                Application.Quit();
-            }
-        }
-        else //im so tired dont judge me :)
-        {
-            if (lastScene == "")
-            {
-                GUI.Box(new Rect(10, 10, Screen.width - 20, 110), "Boo", style);
-
-                float buttonHeight = (Screen.height - 130 - 20) / 2f;
-
-                if (GUI.Button(new Rect(10, 130, Screen.width - 20, buttonHeight), "Play", style))
-                {
-                    /*lastScene = "Menu";
-                    SceneManager.LoadScene("scene1");*/
-                }
-
-                if (GUI.Button(new Rect(10, 130 + 10 + buttonHeight, Screen.width - 20, buttonHeight), "Quit", style))
-                {
-                    Application.Quit();
-                }
-            }
         }
     }
 

@@ -5514,6 +5514,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 302608755525730350, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
+      propertyPath: health
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 302608755525730350, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
+      propertyPath: maxHealth
+      value: 1000000
+      objectReference: {fileID: 0}
     - target: {fileID: 2258593518612774032, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
       propertyPath: m_Name
       value: FirstPersonController
@@ -5561,6 +5569,10 @@ PrefabInstance:
     - target: {fileID: 2258593518612774044, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586340796089086724, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
+      propertyPath: batteries
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 665b791d8fcbde14dac2af350a0b7233, type: 3}
