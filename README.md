@@ -2,7 +2,7 @@
 
 ![boo](https://user-images.githubusercontent.com/20091013/211210066-4aaea456-629a-4c87-be75-9487f283e045.png)
 
-This game was made in 3 days for the Game Jame _MiniJame 117: Ghosts_.
+This game was made in 3 days for the Game Jam _MiniJam 117: Ghosts_.
 The theme was **ghosts** and the constraint was to **use shotgun as a game mechanic**.
 
 <p align="center">
